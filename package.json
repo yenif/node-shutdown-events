@@ -1,6 +1,6 @@
 {
   "name": "y0gi636-node-shutdown-events",
-  "version": "0.1.1-1",
+  "version": "0.1.2",
   "description": "forked https://github.com/UberEther/node-shutdown-events",
   "main": "lib",
   "repository": {
