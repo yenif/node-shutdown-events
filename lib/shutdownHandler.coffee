@@ -117,7 +117,7 @@ class ShutdownHandler
         .then () -> log.info "***** All shutdown handlers completed - waiting for event queue to empty"
         .catch (err) ->
             log.warn "***** Forcing immediate exit after error occurred in shutdown handling:", err.stack||err.message||err
-            onExit()
+        .delay().finally onExit
         # Cannot use Promise.timeout here because the timeout is not unref'ed
 
 
