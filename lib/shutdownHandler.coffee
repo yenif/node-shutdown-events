@@ -31,8 +31,8 @@ class ShutdownHandler
         @_onExitListener = @_onExitListener.bind @
 
         # Hook events
-        @process.on "SIGTERM", () -> self.shutdown "SIGTERM", 128+15
-        @process.on "SIGINT", () -> self.shutdown "SIGINT", 128+2
+        @process.on "SIGTERM", () -> self.shutdown "SIGTERM", (config.sigterm_code || 128+15)
+        @process.on "SIGINT", () -> self.shutdown "SIGINT", (config.sigint_code || 128+2)
         @process.on "uncaughtException", @handleUnexpectedError
         @process.on "unhandledRejection", @handleUnexpectedError
         @process.on "newListener", @_onProcessNewListener
