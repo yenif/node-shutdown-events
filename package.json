@@ -20,7 +20,7 @@
   "scripts": {
     "test": "mocha",
     "test-cov": "istanbul cover --config test/istanbul.yml node_modules/mocha/bin/_mocha",
-    "prepublish": "coffee -o lib -c lib/*.coffee"
+    "prepare": "coffee -o lib -c lib/*.coffee"
   },
   "dependencies": {
     "bluebird": "^2.9.13",
