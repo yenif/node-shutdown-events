@@ -7,10 +7,17 @@ class ShutdownHandler
     additionalShutdownEvents: []
     finalShutdownEvents: ["shutdownFinal"]
 
-    constructor: (config) ->
+    constructor: (config = {}) ->
         self = this
-        @process = config.process || process # Testing override
-        @cluster = config?.cluster || cluster # Testing override
+        config = Object.assign {
+          process,
+          cluster,
+          SIGTERM: 128+15,
+          SIGINT: 128+2
+        }, config
+
+        @process = config.process
+        @cluster = config.cluster
 
         # Sanity checks - we should be the only handler for all of these...
         if @process.nodeShutdownHandler then throw new Error "ShutdownManager already installed"
@@ -31,8 +38,8 @@ class ShutdownHandler
         @_onExitListener = @_onExitListener.bind @
 
         # Hook events
-        @process.on "SIGTERM", () -> self.shutdown "SIGTERM", (config.sigterm_code || 128+15)
-        @process.on "SIGINT", () -> self.shutdown "SIGINT", (config.sigint_code || 128+2)
+        @process.on "SIGTERM", () -> self.shutdown "SIGTERM", config.sigterm_code
+        @process.on "SIGINT", () -> self.shutdown "SIGINT", config.sigint_code
         @process.on "uncaughtException", @handleUnexpectedError
         @process.on "unhandledRejection", @handleUnexpectedError
         @process.on "newListener", @_onProcessNewListener
